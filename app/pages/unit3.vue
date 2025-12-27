@@ -110,16 +110,28 @@ const editorOptions = {
 };
 
 onMounted(async () => {
-  const script = document.createElement('script');
+  // ❌ 刪除：原本建立 script 標籤的那一大段程式碼
+  /* const script = document.createElement('script');
   script.src = "https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js";
   document.head.appendChild(script);
+  script.onload = ... 
+  */
 
-  script.onload = async () => {
-    pyodide = await loadPyodide();
-    await pyodide.loadPackage("micropip");
-    isLoading.value = false;
-    console.log("Python Ready!");
-  };
+  // ✨ 改成：直接檢查全域變數有沒有 loadPyodide
+  // 我們設一個定時器檢查，因為 script 加了 defer，可能還沒跑完
+  const checkPyodide = setInterval(async () => {
+    if (window.loadPyodide) {
+      clearInterval(checkPyodide);
+      
+      // 如果還沒初始化過才初始化
+      if (!pyodide) {
+        pyodide = await window.loadPyodide();
+        // await pyodide.loadPackage("micropip"); // 這行記得刪掉
+        isLoading.value = false;
+        console.log("Python Ready!");
+      }
+    }
+  }, 100);
 });
 
 const runCode = async () => {

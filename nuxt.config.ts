@@ -11,5 +11,16 @@ export default defineNuxtConfig({
       }
     }
   },
-  modules: ['@nuxtjs/tailwindcss']
+  modules: ['@nuxtjs/tailwindcss'],
+  // ✨ 新增這一段：讓 Pyodide 在全站都會預先載入
+  app: {
+    head: {
+      script: [
+        {
+          src: "https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js",
+          defer: true // 加上 defer 讓它不會卡住畫面顯示
+        }
+      ]
+    }
+  }
 })
