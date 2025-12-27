@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  # --- 1. 資料庫 (MySQL) ---
+  db:
+    image: mysql:8.0
+    container_name: python_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: python_learning
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  # --- 2. 資料庫管理介面 (phpMyAdmin) ---
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: python_pma
+    restart: always
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+
+  # --- 3. 你的 Nuxt 網站 (新增這個!) ---
+  nuxt-app:
+    build: .             # 讀取當前目錄的 Dockerfile
+    container_name: python_nuxt
+    restart: always
+    ports:
+      - "3000:3000"      # 瀏覽器用 localhost:3000 連線
+    volumes:
+      - .:/app           # ✨ 重要：把電腦的程式碼同步進去，這樣你改 Code 網頁才會變
+      - /app/node_modules # 避開地雷：保留容器內的 node_modules，不要被電腦的蓋掉
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY} # 把 .env 的金鑰傳進去
+      - DB_HOST=db       # ✨ 關鍵：告訴 Nuxt 資料庫的名字叫做 'db'
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=python_learning
+    depends_on:
+      - db               # 等資料庫開好再開網頁
+
+volumes:
+  db_data:
