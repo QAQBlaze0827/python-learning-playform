@@ -53,7 +53,7 @@
         <div class="flex flex-col h-full">
           <h2 class="text-xl font-bold mb-4 border-b pb-2">💻 撰寫程式碼</h2>
           
-          <div class="flex-1 w-full border rounded-lg overflow-hidden shadow-inner h-[50vh] md:h-96">
+          <div class="w-full border rounded-lg overflow-hidden shadow-inner h-[50vh] md:h-96">
             <ClientOnly>
               <VueMonacoEditor
                 v-model:value="userCode"
