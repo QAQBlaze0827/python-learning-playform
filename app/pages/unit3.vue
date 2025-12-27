@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-100 p-6">
+  <div class="min-h-screen bg-gray-100 p-6 pb-20">
     <div class="max-w-5xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
       
       <div class="bg-teal-600 p-6 text-white flex justify-between items-center">
@@ -55,7 +55,7 @@
         <div class="flex flex-col h-full">
           <h2 class="text-xl font-bold mb-4 border-b pb-2">💻 撰寫程式碼</h2>
           
-          <div class="flex-1 w-full border rounded-lg overflow-hidden shadow-inner h-96">
+          <div class="flex-1 w-full border rounded-lg overflow-hidden shadow-inner h-[50vh] md:h-96">
             <ClientOnly>
               <VueMonacoEditor
                 v-model:value="userCode"
